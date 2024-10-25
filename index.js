@@ -27,18 +27,18 @@ searchButtonElement.addEventListener('click', async () => {
         return;
     }
 
-    spinner.style.display = "inline-block"; // Показываем спиннер
+    spinner.style.display = "inline-block";
 
     try {
         const movie = await fetchData(movieTitleValue);
 
-        if (movie.Response === "False") { // Если фильм не найден
+        if (movie.Response === "False") {
             toastBody.textContent = "Фильм не найден";
             toastHeader.classList.remove("bg-success");
-            toastHeader.classList.add("bg-danger"); // Меняем цвет тостера на красный
-            toastBootstrap.show(); // Показываем тостер
+            toastHeader.classList.add("bg-danger");
+            toastBootstrap.show();
         } else {
-            // Очищаем контейнер перед добавлением новой карточки
+            
             searchResultsContainer.innerHTML = '';
 
             const cardElementTemplate = `
@@ -61,35 +61,35 @@ searchButtonElement.addEventListener('click', async () => {
             searchResultsContainer.insertAdjacentHTML('beforeend', cardElementTemplate);
             addedMovie = movie;
 
-            // Обработчик для добавления в избранное
+            
             const addToFavButton = searchResultsContainer.querySelector('#add-fav-btn');
             addToFavButton.addEventListener('click', () => {
-                // Проверяем, существует ли фильм в избранных
+                
                 if (!favMoviesList.some(favMovie => favMovie.Title === movie.Title)) {
-                    favMoviesList.push(movie); // Добавляем фильм в избранное
+                    favMoviesList.push(movie);
                     localStorage.setItem('favMovies', JSON.stringify(favMoviesList));
                     toastBody.textContent = "Фильм добавлен в избранное";
                     toastHeader.classList.remove("bg-danger");
-                    toastHeader.classList.add("bg-success"); // Меняем цвет тостера на зелёный
-                    toastBootstrap.show(); // Показываем тостер
+                    toastHeader.classList.add("bg-success");
+                    toastBootstrap.show();
                 } else {
                     toastBody.textContent = "Фильм уже в избранном";
                     toastHeader.classList.remove("bg-success");
-                    toastHeader.classList.add("bg-warning"); // Меняем цвет тостера на жёлтый
-                    toastBootstrap.show(); // Показываем тостер
+                    toastHeader.classList.add("bg-warning");
+                    toastBootstrap.show(); 
                 }
             });
 
-            // Отображаем тостер при успешном нахождении фильма
+            
             toastBody.textContent = "Фильм найден";
             toastHeader.classList.remove("bg-danger");
-            toastHeader.classList.add("bg-success"); // Меняем цвет тостера на зелёный
-            toastBootstrap.show(); // Показываем тостер
+            toastHeader.classList.add("bg-success");
+            toastBootstrap.show();
         }
     } catch (error) {
         alert("Ошибка при получении данных о фильме.");
     } finally {
-        spinner.style.display = "none"; // Скрываем спиннер после загрузки
+        spinner.style.display = "none";
     }
 });
 
