@@ -48,7 +48,7 @@ searchButtonElement.addEventListener('click', async () => {
                     <h5 class="card-title">${movie.Title}</h5>
                     <p class="card-text">${movie.Plot}</p>
                     <div class="d-flex align-items-stretch">
-                        <a href="#" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <a href="#" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal" id="more-info-btn">
                             Подробнее
                         </a>
                         <a href="#" class="btn btn-primary" id="add-fav-btn">
@@ -60,6 +60,36 @@ searchButtonElement.addEventListener('click', async () => {
 
             searchResultsContainer.insertAdjacentHTML('beforeend', cardElementTemplate);
             addedMovie = movie;
+
+            const modalTemplate = `
+            <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="max-width: 600px;"> <!-- Устанавливаем меньшую ширину модального окна -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="movieModalLabel">${movie.Title}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex align-items-start">
+                            <img src="${movie.Poster}" alt="${movie.Title} Poster" class="img-fluid" style="width: 40%; margin-right: 15px;"> <!-- Изображение занимает 40% ширины -->
+                            <div>
+                                <p>${movie.Plot}</p> <!-- Описание располагается справа от изображения -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+            document.body.insertAdjacentHTML('beforeend', modalTemplate);
+
+            const movieModal = new bootstrap.Modal(document.getElementById('movieModal'));
+            const moreInfoButton = searchResultsContainer.querySelector('#more-info-btn');
+            moreInfoButton.addEventListener('click', () => {
+                movieModal.show();
+            });
+
 
             
             const addToFavButton = searchResultsContainer.querySelector('#add-fav-btn');
